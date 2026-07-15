@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Product{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-success text-white">
+
+                <h3 class="mb-0">
+                    ➕ Add / Edit Product
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <div class="d-grid">
+
+                        <button class="btn btn-success btn-lg">
+
+                            💾 Save Product
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <hr>
+
+                <a href="/" class="btn btn-secondary">
+
+                    ⬅ Back to Product List
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

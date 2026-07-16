@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>🤖 Smart AI Inventory Assistant</h2>
+    <hr>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label><b>Current Stock</b></label>
+            <input type="number" name="current_stock" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label><b>Previous Sales</b></label>
+            <input type="number" name="previous_sales" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            🤖 Predict
+        </button>
+    </form>
+
+    {% if prediction %}
+
+    <div class="alert alert-success mt-4">
+
+        <h4>🤖 AI Prediction Result</h4>
+        <hr>
+
+        <p><strong>📈 Predicted Demand:</strong> {{ prediction }}</p>
+
+        <p><strong>🔥 Demand Level:</strong> {{ demand }}</p>
+
+        <p><strong>💚 Inventory Health:</strong> {{ health }}</p>
+
+        <p><strong>📊 Health Score:</strong> {{ health_score }}%</p>
+
+        <p><strong>💡 AI Recommendation:</strong> {{ recommendation }}</p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

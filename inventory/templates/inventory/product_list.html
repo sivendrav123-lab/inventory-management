@@ -85,7 +85,7 @@
 <th>Product</th>
 <th>Quantity</th>
 <th>Price</th>
-<th width="260">Action</th>
+<th width="350">Action</th>
 
 </tr>
 
@@ -117,19 +117,20 @@
 
 <td>
 
-<a href="{% url 'product_detail' product.id %}"
-class="btn btn-info btn-sm">
+<a href="{% url 'product_detail' product.id %}" class="btn btn-info btn-sm">
 👁 View
 </a>
 
-<a href="{% url 'edit_product' product.id %}"
-class="btn btn-warning btn-sm">
+<a href="{% url 'edit_product' product.id %}" class="btn btn-warning btn-sm">
 ✏ Edit
 </a>
 
-<a href="{% url 'delete_product' product.id %}"
-class="btn btn-danger btn-sm">
+<a href="{% url 'delete_product' product.id %}" class="btn btn-danger btn-sm">
 🗑 Delete
+</a>
+
+<a href="{% url 'ai_prediction' %}" class="btn btn-success btn-sm">
+🤖 AI
 </a>
 
 </td>

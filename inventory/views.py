@@ -3,6 +3,8 @@ from django.db.models import Sum, F
 from django.core.paginator import Paginator
 from .models import Product
 from .forms import ProductForm
+import joblib
+import os
 
 
 def product_list(request):
@@ -98,3 +100,66 @@ def product_detail(request, id):
     return render(request, "inventory/product_detail.html", {
         "product": product
     })
+
+
+# ===========================
+# AI DEMAND PREDICTION
+# ===========================
+
+def ai_prediction(request):
+
+    prediction = None
+
+    if request.method == "POST":
+
+        current_stock = float(request.POST.get("current_stock"))
+        previous_sales = float(request.POST.get("previous_sales"))
+
+        model_path = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)),
+            "sales_model.pkl"
+        )
+
+        model = joblib.load(model_path)
+
+        prediction = model.predict([[current_stock, previous_sales]])[0]
+
+        # Demand Level
+        if prediction >= 80:
+            demand = "High"
+        elif prediction >= 40:
+            demand = "Medium"
+        else:
+            demand = "Low"
+
+        # Health Score
+        health_score = min(100, int((previous_sales / current_stock) * 100))
+
+        if health_score >= 80:
+            health = "Excellent"
+        elif health_score >= 50:
+            health = "Average"
+        else:
+            health = "Poor"
+
+        # Recommendation
+        if prediction > current_stock:
+            recommendation = "Increase Stock"
+        elif prediction < current_stock / 2:
+            recommendation = "Reduce Stock"
+        else:
+            recommendation = "Maintain Current Stock"
+
+        return render(
+            request,
+            "inventory/ai_prediction.html",
+            {
+                "prediction": round(prediction, 2),
+                "demand": demand,
+                "health": health,
+                "health_score": health_score,
+                "recommendation": recommendation,
+            }
+        )
+
+    return render(request, "inventory/ai_prediction.html")

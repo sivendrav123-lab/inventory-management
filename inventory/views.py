@@ -105,61 +105,62 @@ def product_detail(request, id):
 # ===========================
 # AI DEMAND PREDICTION
 # ===========================
+def ai_prediction(request, id):
 
-def ai_prediction(request):
+    product = get_object_or_404(Product, id=id)
 
-    prediction = None
+    current_stock = product.quantity
+    previous_sales = product.previous_sales
 
-    if request.method == "POST":
+    model_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "sales_model.pkl"
+    )
 
-        current_stock = float(request.POST.get("current_stock"))
-        previous_sales = float(request.POST.get("previous_sales"))
+    model = joblib.load(model_path)
 
-        model_path = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            "sales_model.pkl"
-        )
+    prediction = model.predict([[current_stock, previous_sales]])[0]
 
-        model = joblib.load(model_path)
+    # Demand Level
+    if prediction >= 80:
+        demand = "High"
+    elif prediction >= 40:
+        demand = "Medium"
+    else:
+        demand = "Low"
 
-        prediction = model.predict([[current_stock, previous_sales]])[0]
-
-        # Demand Level
-        if prediction >= 80:
-            demand = "High"
-        elif prediction >= 40:
-            demand = "Medium"
-        else:
-            demand = "Low"
-
-        # Health Score
+    # Health Score
+    if current_stock > 0:
         health_score = min(100, int((previous_sales / current_stock) * 100))
+    else:
+        health_score = 0
 
-        if health_score >= 80:
-            health = "Excellent"
-        elif health_score >= 50:
-            health = "Average"
-        else:
-            health = "Poor"
+    if health_score >= 80:
+        health = "Excellent"
+    elif health_score >= 50:
+        health = "Average"
+    else:
+        health = "Poor"
 
-        # Recommendation
-        if prediction > current_stock:
-            recommendation = "Increase Stock"
-        elif prediction < current_stock / 2:
-            recommendation = "Reduce Stock"
-        else:
-            recommendation = "Maintain Current Stock"
+    # Recommendation
+    if prediction > current_stock:
+        recommendation = "Increase Stock"
+    elif prediction < current_stock / 2:
+        recommendation = "Reduce Stock"
+    else:
+        recommendation = "Maintain Current Stock"
 
-        return render(
-            request,
-            "inventory/ai_prediction.html",
-            {
-                "prediction": round(prediction, 2),
-                "demand": demand,
-                "health": health,
-                "health_score": health_score,
-                "recommendation": recommendation,
-            }
-        )
-
-    return render(request, "inventory/ai_prediction.html")
+    return render(
+        request,
+        "inventory/ai_prediction.html",
+        {
+            "product": product,
+            "current_stock": current_stock,
+            "previous_sales": previous_sales,
+            "prediction": round(prediction, 2),
+            "demand": demand,
+            "health": health,
+            "health_score": health_score,
+            "recommendation": recommendation,
+        },
+    )

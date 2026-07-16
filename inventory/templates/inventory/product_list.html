@@ -85,7 +85,7 @@
 <th>Product</th>
 <th>Quantity</th>
 <th>Price</th>
-<th width="350">Action</th>
+<th width="420">Action</th>
 
 </tr>
 
@@ -129,8 +129,8 @@
 🗑 Delete
 </a>
 
-<a href="{% url 'ai_prediction' %}" class="btn btn-success btn-sm">
-🤖 AI
+<a href="{% url 'ai_prediction' product.id %}" class="btn btn-success btn-sm">
+🤖 AI Analysis
 </a>
 
 </td>

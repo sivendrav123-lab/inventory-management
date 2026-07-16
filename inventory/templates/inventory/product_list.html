@@ -37,9 +37,42 @@
     </div>
 
 </div>
+<!-- AI Summary -->
 
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card bg-danger text-white shadow">
+            <div class="card-body text-center">
+                <h5>🔥 High Demand</h5>
+                <h2>{{ high_demand }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-warning text-dark shadow">
+            <div class="card-body text-center">
+                <h5>📈 Medium Demand</h5>
+                <h2>{{ medium_demand }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body text-center">
+                <h5>📉 Low Demand</h5>
+                <h2>{{ low_demand }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
 <!-- Search -->
-<div class="row mb-3">
+<!-- Search -->
+
+<div class="row mb-4 align-items-center">
 
     <div class="col-md-6">
 
@@ -47,9 +80,9 @@
 
             <input
                 type="text"
-                class="form-control me-2"
                 name="search"
-                placeholder="Search Product..."
+                class="form-control me-2"
+                placeholder="🔍 Search Product..."
                 value="{{ request.GET.search }}">
 
             <button class="btn btn-primary">
@@ -66,10 +99,92 @@
             ➕ Add Product
         </a>
 
+        <a href="{% url 'export_excel' %}" class="btn btn-primary">
+            📥 Export Excel
+        </a>
+
     </div>
 
 </div>
+<!-- Analytics Dashboard -->
 
+<!-- Analytics Dashboard -->
+
+<div class="row mb-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-dark text-white">
+                <h4>📊 Inventory Analytics</h4>
+            </div>
+
+            <div class="card-body">
+                <canvas id="inventoryChart"></canvas>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <div class="card bg-danger text-white shadow">
+
+                    <div class="card-body text-center">
+
+                        <h5>⚠ Low Stock</h5>
+
+                        <h2>{{ low_stock }}</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <div class="card bg-success text-white shadow">
+
+                    <div class="card-body text-center">
+
+                        <h5>📦 High Stock</h5>
+
+                        <h2>{{ high_stock }}</h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-12">
+
+                <div class="card bg-info text-white shadow">
+
+                    <div class="card-body text-center">
+
+                        <h5>🤖 AI Inventory Status</h5>
+
+                        <h4>System Running Successfully</h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <!-- Product Table -->
 
 <div class="card shadow">
@@ -194,5 +309,57 @@ Next
 </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<script>
+
+const labels = [
+{% for label in chart_labels %}
+'{{ label }}',
+{% endfor %}
+];
+
+const values = [
+{% for value in chart_values %}
+{{ value }},
+{% endfor %}
+];
+
+new Chart(document.getElementById('inventoryChart'),{
+
+type:'bar',
+
+data:{
+
+labels:labels,
+
+datasets:[{
+
+label:'Stock Quantity',
+
+data:values
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:true
+
+}
+
+}
+
+}
+
+});
+
+</script>
 {% endblock %}

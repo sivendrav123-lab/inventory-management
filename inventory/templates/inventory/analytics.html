@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📊 Inventory Analytics</h2>
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+        <div class="card bg-danger text-white shadow">
+            <div class="card-body text-center">
+                <h5>🔥 High Demand</h5>
+                <h2>{{ high_demand }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-warning text-dark shadow">
+            <div class="card-body text-center">
+                <h5>🟨 Medium Demand</h5>
+                <h2>{{ medium_demand }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body text-center">
+                <h5>🟩 Low Demand</h5>
+                <h2>{{ low_demand }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row mt-4">
+
+    <div class="col-md-6">
+        <div class="card bg-danger text-white shadow">
+            <div class="card-body text-center">
+                <h5>⚠ Low Stock</h5>
+                <h2>{{ low_stock }}</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body text-center">
+                <h5>📦 High Stock</h5>
+                <h2>{{ high_stock }}</h2>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-dark text-white">
+        <h4>📊 Inventory Chart</h4>
+    </div>
+
+    <div class="card-body">
+        <canvas id="analyticsChart"></canvas>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const labels = [
+{% for label in chart_labels %}
+'{{ label }}',
+{% endfor %}
+];
+
+const values = [
+{% for value in chart_values %}
+{{ value }},
+{% endfor %}
+];
+
+new Chart(document.getElementById('analyticsChart'), {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Stock Quantity',
+            data: values
+        }]
+    },
+    options: {
+        responsive: true
+    }
+});
+
+</script>
+
+{% endblock %}

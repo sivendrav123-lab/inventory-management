@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}AI Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-primary text-white">
+
+<h2 class="text-center">
+🤖 AI Smart Inventory Dashboard
+</h2>
+
+</div>
+
+<div class="card-body">
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-dark">
+
+<tr>
+
+<th>Product</th>
+<th>Stock</th>
+<th>Previous Sales</th>
+<th>Prediction</th>
+<th>Demand</th>
+<th>Health</th>
+<th>Recommendation</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for product in products %}
+
+<tr>
+
+<td>{{ product.name }}</td>
+
+<td>{{ product.stock }}</td>
+
+<td>{{ product.sales }}</td>
+
+<td>{{ product.prediction }}</td>
+
+<td>
+
+{% if product.demand == "High" %}
+<span class="badge bg-danger">
+High
+</span>
+
+{% elif product.demand == "Medium" %}
+
+<span class="badge bg-warning text-dark">
+Medium
+</span>
+
+{% else %}
+
+<span class="badge bg-success">
+Low
+</span>
+
+{% endif %}
+
+</td>
+
+<td>{{ product.health }}</td>
+
+<td>{{ product.recommendation }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+<div class="text-center mt-4">
+
+<a href="{% url 'product_list' %}" class="btn btn-secondary btn-lg">
+
+⬅ Back to Dashboard
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

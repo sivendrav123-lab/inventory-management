@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">📄 Reports Center</h2>
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-body text-center">
+
+                <h3>📥 Excel Report</h3>
+
+                <p>Download all inventory data in Excel format.</p>
+
+                <a href="{% url 'export_excel' %}" class="btn btn-success btn-lg">
+                    Download Excel
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card shadow">
+
+            <div class="card-body text-center">
+
+                <h3>📄 PDF Report</h3>
+
+                <p>
+                    Open any product from the Inventory page and click
+                    <strong>Download PDF Report</strong>.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

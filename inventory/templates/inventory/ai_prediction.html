@@ -1,63 +1,227 @@
 {% extends "base.html" %}
 
+{% block title %}AI Prediction{% endblock %}
+
 {% block content %}
 
-<div class="container mt-4">
+<div class="container">
 
-    <h2 class="text-center">
-        🤖 Smart AI Inventory Assistant
-    </h2>
+<div class="row">
 
-    <hr>
+<div class="col-md-12">
 
-    <div class="card shadow">
+<div class="card shadow-lg border-0">
 
-        <div class="card-header bg-primary text-white">
-            <h4>Product Information</h4>
-        </div>
+<div class="card-header bg-primary text-white">
 
-        <div class="card-body">
+<h2 class="text-center">
+🤖 Smart AI Inventory Assistant
+</h2>
 
-            <p><strong>📦 Product Name:</strong> {{ product.name }}</p>
+</div>
 
-            <p><strong>📦 Current Stock:</strong> {{ current_stock }}</p>
+<div class="card-body">
 
-            <p><strong>📈 Previous Sales:</strong> {{ previous_sales }}</p>
+<div class="row">
 
-        </div>
+<div class="col-md-4">
 
-    </div>
+<div class="card bg-info text-white shadow">
 
-    <br>
+<div class="card-body text-center">
 
-    <div class="card shadow">
+<h5>📦 Product</h5>
 
-        <div class="card-header bg-success text-white">
-            <h4>🤖 AI Prediction Result</h4>
-        </div>
+<h3>{{ product.name }}</h3>
 
-        <div class="card-body">
+</div>
 
-            <p><strong>📊 Predicted Demand:</strong> {{ prediction }}</p>
+</div>
 
-            <p><strong>🔥 Demand Level:</strong> {{ demand }}</p>
+</div>
 
-            <p><strong>💚 Inventory Health:</strong> {{ health }}</p>
+<div class="col-md-4">
 
-            <p><strong>📈 Health Score:</strong> {{ health_score }}%</p>
+<div class="card bg-success text-white shadow">
 
-            <p><strong>💡 AI Recommendation:</strong> {{ recommendation }}</p>
+<div class="card-body text-center">
 
-        </div>
+<h5>Current Stock</h5>
 
-    </div>
+<h2>{{ current_stock }}</h2>
 
-    <br>
+</div>
 
-    <a href="{% url 'product_list' %}" class="btn btn-secondary">
-        ⬅ Back to Inventory
+</div>
+
+</div>
+
+<div class="col-md-4">
+
+<div class="card bg-warning text-dark shadow">
+
+<div class="card-body text-center">
+
+<h5>Previous Sales</h5>
+
+<h2>{{ previous_sales }}</h2>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="row">
+
+<div class="col-md-6">
+
+<div class="card border-success shadow">
+
+<div class="card-header bg-success text-white">
+
+<h4>🤖 AI Prediction</h4>
+
+</div>
+
+<div class="card-body">
+
+<p><b>Predicted Demand</b></p>
+
+<h1 class="text-primary">{{ prediction }}</h1>
+
+<hr>
+
+<p><b>Demand Level</b></p>
+
+<h4>{{ demand }}</h4>
+
+<hr>
+
+<p><b>Inventory Health</b></p>
+
+<h4>{{ health }}</h4>
+
+<hr>
+
+<p><b>Health Score</b></p>
+
+<h4>{{ health_score }}%</h4>
+
+<hr>
+
+<p><b>Recommendation</b></p>
+
+<div class="alert alert-info">
+
+{{ recommendation }}
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="card shadow">
+
+<div class="card-header bg-dark text-white">
+
+<h4>📊 AI Analytics</h4>
+
+</div>
+
+<div class="card-body">
+
+<canvas id="salesChart"></canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="text-center mt-4">
+
+<div class="text-center mt-4">
+
+    <a href="{% url 'product_list' %}" class="btn btn-secondary btn-lg me-2">
+        ⬅ Back to Dashboard
+    </a>
+
+    <a href="{% url 'download_report' product.id %}" class="btn btn-danger btn-lg">
+        📄 Download PDF Report
     </a>
 
 </div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('salesChart');
+
+new Chart(ctx,{
+
+type:'bar',
+
+data:{
+
+labels:[
+'Current Stock',
+'Previous Sales',
+'Predicted Demand'
+],
+
+datasets:[{
+
+label:'Inventory Analytics',
+
+data:[
+{{ stock }},
+{{ sales }},
+{{ predicted }}
+]
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+display:true
+}
+
+}
+
+}
+
+});
+
+</script>
 
 {% endblock %}
